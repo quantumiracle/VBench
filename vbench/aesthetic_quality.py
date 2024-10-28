@@ -89,7 +89,7 @@ def compute_aesthetic_quality(json_dir, device, submodules_list, **kwargs):
         aesthetic_model = get_aesthetic_model(aes_path).to(device)
     clip_model, preprocess = clip.load(vit_path, device=device)
     video_list, _ = load_dimension_info(json_dir, dimension='aesthetic_quality', lang='en')
-    video_list = distribute_list_to_rank(video_list)
+    # video_list = distribute_list_to_rank(video_list)
     all_results, video_results = laion_aesthetic(aesthetic_model, clip_model, video_list, device)
     if get_world_size() > 1:
         video_results = gather_list_of_dict(video_results)

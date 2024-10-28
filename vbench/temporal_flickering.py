@@ -65,7 +65,7 @@ def temporal_flickering(video_list):
 
 def compute_temporal_flickering(json_dir, device, submodules_list, **kwargs):
     video_list, _ = load_dimension_info(json_dir, dimension='temporal_flickering', lang='en')
-    video_list = distribute_list_to_rank(video_list)
+    # video_list = distribute_list_to_rank(video_list) # this only keeps rank 0 results
     all_results, video_results = temporal_flickering(video_list)
     if get_world_size() > 1:
         video_results = gather_list_of_dict(video_results)

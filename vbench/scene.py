@@ -69,7 +69,7 @@ def compute_scene(json_dir, device, submodules_dict, **kwargs):
     model = model.to(device)
     logger.info("Initialize caption model success")
     _, prompt_dict_ls = load_dimension_info(json_dir, dimension='scene', lang='en')
-    prompt_dict_ls = distribute_list_to_rank(prompt_dict_ls)
+    # prompt_dict_ls = distribute_list_to_rank(prompt_dict_ls)
     all_results, video_results = scene(model, prompt_dict_ls, device)
     if get_world_size() > 1:
         video_results = gather_list_of_dict(video_results)

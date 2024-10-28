@@ -184,7 +184,7 @@ def compute_motion_smoothness(json_dir, device, submodules_list, **kwargs):
     ckpt = submodules_list["ckpt"] # pretrained/amt_model/amt-s.pth
     motion = MotionSmoothness(config, ckpt, device)
     video_list, _ = load_dimension_info(json_dir, dimension='motion_smoothness', lang='en')
-    video_list = distribute_list_to_rank(video_list)
+    # video_list = distribute_list_to_rank(video_list)
     all_results, video_results = motion_smoothness(motion, video_list)
     if get_world_size() > 1:
         video_results = gather_list_of_dict(video_results)

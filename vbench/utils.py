@@ -198,6 +198,87 @@ def read_frames_decord_by_fps(
     frames = video_reader.get_batch(frame_indices)  # (T, H, W, C), torch.uint8
     frames = frames.permute(0, 3, 1, 2)  # (T, C, H, W), torch.uint8
     return frames
+
+# import cv2
+
+# def load_video(video_path, data_transform=None, num_frames=None, return_tensor=True, width=None, height=None):
+#     frames = []
+    
+#     if video_path.endswith('.gif'):
+#         img = Image.open(video_path)
+#         for frame in ImageSequence.Iterator(img):
+#             frame = frame.convert('RGB')
+#             frames.append(np.array(frame, dtype=np.uint8))
+    
+#     elif video_path.endswith('.png'):
+#         frame = Image.open(video_path).convert('RGB')
+#         frames.append(np.array(frame, dtype=np.uint8))
+    
+#     elif video_path.endswith('.mp4'):
+#         cap = cv2.VideoCapture(video_path)
+#         while True:
+#             ret, frame = cap.read()
+#             if not ret:
+#                 break
+#             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#             frames.append(frame)
+#         cap.release()
+    
+#     else:
+#         raise NotImplementedError("Unsupported file format")
+    
+#     frames = np.array(frames)
+    
+#     if num_frames is not None and len(frames) > num_frames:
+#         frame_indices = np.linspace(0, len(frames) - 1, num_frames, dtype=int)
+#         frames = frames[frame_indices]
+    
+#     if data_transform:
+#         frames = data_transform(frames)
+    
+#     if return_tensor:
+#         frames = torch.tensor(frames, dtype=torch.uint8)
+#         frames = frames.permute(0, 3, 1, 2)  # Change dimension order to (T, C, H, W)
+
+#     return frames
+
+# def read_frames_decord_by_fps(
+#         video_path, sample_fps=2, sample='rand', fix_start=None, 
+#         max_num_frames=-1, trimmed30=False, num_frames=8
+#     ):
+#     cap = cv2.VideoCapture(video_path)
+#     if not cap.isOpened():
+#         raise IOError(f"Cannot open video {video_path}")
+    
+#     total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+#     fps = cap.get(cv2.CAP_PROP_FPS)
+#     duration = total_frames / float(fps)
+    
+#     if trimmed30 and duration > 30:
+#         duration = 30
+#         total_frames = int(30 * float(fps))
+    
+#     frame_indices = get_frame_indices(
+#         num_frames, total_frames, sample, fix_start, 
+#         fps, max_num_frames
+#     )
+
+#     frames = []
+#     for frame_idx in frame_indices:
+#         cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx)
+#         ret, frame = cap.read()
+#         if ret:
+#             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#             frames.append(frame)
+#         else:
+#             print(f"Warning: Frame {frame_idx} could not be read")
+    
+#     cap.release()
+    
+#     frames = np.array(frames, dtype=np.uint8)
+#     frames = torch.tensor(frames).permute(0, 3, 1, 2)  # Convert shape to (T, C, H, W), torch.uint8
+    
+#     return frames
     
 def load_dimension_info(json_dir, dimension, lang):
     """

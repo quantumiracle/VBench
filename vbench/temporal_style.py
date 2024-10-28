@@ -68,7 +68,7 @@ def compute_temporal_style(json_dir, device, submodules_list, **kwargs):
     tokenizer = SimpleTokenizer(os.path.join(CACHE_DIR, "ViCLIP/bpe_simple_vocab_16e6.txt.gz"))
     viclip = ViCLIP(tokenizer= tokenizer, **submodules_list).to(device)
     _, video_dict = load_dimension_info(json_dir, dimension='temporal_style', lang='en')
-    video_dict = distribute_list_to_rank(video_dict)
+    # video_dict = distribute_list_to_rank(video_dict)
     all_results, video_results = temporal_style(viclip, video_dict, tokenizer, device)
     if get_world_size() > 1:
         video_results = gather_list_of_dict(video_results)

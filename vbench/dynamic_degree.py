@@ -156,7 +156,7 @@ def compute_dynamic_degree(json_dir, device, submodules_list, **kwargs):
     args_new = edict({"model":model_path, "small":False, "mixed_precision":False, "alternate_corr":False})
     dynamic = DynamicDegree(args_new, device)
     video_list, _ = load_dimension_info(json_dir, dimension='dynamic_degree', lang='en')
-    video_list = distribute_list_to_rank(video_list)
+    # video_list = distribute_list_to_rank(video_list)
     all_results, video_results = dynamic_degree(dynamic, video_list)
     if get_world_size() > 1:
         video_results = gather_list_of_dict(video_results)

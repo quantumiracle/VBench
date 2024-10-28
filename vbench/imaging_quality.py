@@ -64,7 +64,7 @@ def compute_imaging_quality(json_dir, device, submodules_list, **kwargs):
     model.training = False
     
     video_list, _ = load_dimension_info(json_dir, dimension='imaging_quality', lang='en')
-    video_list = distribute_list_to_rank(video_list)
+    # video_list = distribute_list_to_rank(video_list)
     all_results, video_results = technical_quality(model, video_list, device, **kwargs)
     if get_world_size() > 1:
         video_results = gather_list_of_dict(video_results)

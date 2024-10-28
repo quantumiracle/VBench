@@ -155,4 +155,5 @@ class VBench(object):
         output_name = os.path.join(self.output_path, name+'_eval_results.json')
         if get_rank() == 0:
             save_json(results_dict, output_name)
-            print0(f'Evaluation results saved to {output_name}')
+            # print0(f'Evaluation results saved to {output_name}')
+        return results_dict
